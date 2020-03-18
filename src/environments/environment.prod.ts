@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  base: "https://pdfviewapi.herokuapp.com/annotations"
 };
