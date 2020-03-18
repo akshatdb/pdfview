@@ -52,6 +52,7 @@
     }
   }
   &.disabled {
+    pointer-events: none;
     .mat-icon {
       color: grey;
       cursor: default;
