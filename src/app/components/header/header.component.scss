@@ -1,0 +1,18 @@
+@import '../../../assets/scss/variables.scss';
+.header{
+    width:100%;
+    background: $main-color;
+    color: white;
+}
+.spacer{
+    flex: 1 1 auto;
+}
+.user-menu{
+    position: absolute;
+    top: 75px;
+    right: 10px;
+    z-index: 1000;
+}
+#account-logo{
+    font-size:42px;
+}

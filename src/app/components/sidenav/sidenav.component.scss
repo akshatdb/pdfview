@@ -1,0 +1,36 @@
+@import '../../../assets/scss/variables.scss';
+.menu-text{
+    height:32px;
+    font-weight: bold;
+}
+.navlist{
+    border-right: 1px solid #e5e5e5;
+    padding-top: 0px;
+    margin-left: -3px;
+}
+.navitem{
+    border-bottom: 1px solid #e5e5e5;
+    text-align: left;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+}
+.nav-icon{
+    position: relative;
+    top: 5px;
+}
+.navitem:hover, .active-nav.navitem{
+    background-color: $main-color;
+    color: white;
+    cursor: pointer;
+}
+.header-icon.nav-icon:hover, .active-nav  .header-icon.nav-icon{
+    background-color: $main-color;
+    color: white;
+}
+.active-nav{
+    pointer-events: none;
+}
+.menu-text{
+    position: relative;
+    top: 7px;
+}

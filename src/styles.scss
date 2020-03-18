@@ -1,0 +1,58 @@
+/* You can add global styles to this file, and also import other style files */
+@import "./assets/scss/variables.scss";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+.header-icon {
+  font-size: 32px;
+  margin: 0 16px 0 0px;
+  height: 32px !important;
+  width: 32px !important;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+.rightmargin-0 {
+  margin-right: 0px;
+}
+.form-field {
+  width: 100%;
+}
+.mat-radio-button {
+  padding: 0 3%;
+}
+.radio-group {
+  text-align: left;
+  padding: 10px;
+}
+app-data-table {
+  width: 99%;
+  height: 99%;
+  table {
+    width: 100%;
+  }
+  tr:nth-child(even) {
+    background: $main-background;
+  }
+  tr {
+    text-align: left;
+    &:hover {
+      background-color: $main-background-hover;
+    }
+  }
+  th {
+    background-color: $main-color;
+    color: white !important;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+}
+.form-error{
+  color:red;
+}

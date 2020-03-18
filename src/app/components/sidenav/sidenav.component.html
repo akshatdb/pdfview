@@ -1,0 +1,6 @@
+<mat-list role="list" class="navlist">
+        <mat-list-item *ngFor="let element of menu" class="navitem" [ngClass]="{'active-nav':activeroute.indexOf(element.route) > -1}" (click)="routeTo(element.route)">
+            <mat-icon mat-list-icon class="header-icon nav-icon" >{{element.icon}}</mat-icon>
+            <h4 mat-line class="menu-text">{{element.name}}</h4>
+        </mat-list-item>
+</mat-list>

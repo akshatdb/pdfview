@@ -1,0 +1,15 @@
+<mat-toolbar class="header">
+    <mat-toolbar-row>
+        <mat-icon matRipple (click)="openNav()" class="header-icon">{{!menuOpen?'menu':'menu_open'}}</mat-icon>
+        <span>Monitoring Demo</span>
+        <span class="spacer"></span>
+        <mat-icon matRipple class="header-icon" (click)="(openMenu = openMenu==='open'?'close':'open')">account_circle</mat-icon>
+        <mat-card class="user-menu" [@slideInOut]="openMenu">
+            <mat-card-header>
+                <div mat-card-avatar><mat-icon id="account-logo">account_circle</mat-icon></div>
+                <mat-card-title>Akshat Dubey</mat-card-title>
+                <mat-card-subtitle>Some Code</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+    </mat-toolbar-row>
+</mat-toolbar> 
