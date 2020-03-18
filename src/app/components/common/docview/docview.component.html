@@ -1,17 +1,21 @@
 <div class="top-bar text-left">
-    <div class="top-bar-icons" [ngClass]="{'button-on':commentMode}" (click)="toggleCommentMode()">
+    <div class="top-bar-icons" [ngClass]="{'button-on':commentMode}" matTooltip="Add Comment"
+        (click)="toggleCommentMode()">
         <mat-icon class="mat-icon">add_comment</mat-icon>
     </div>
     <!-- <div class="top-bar-icons" [ngClass]="{'button-on':commentShow}" (click)="toggleShowComments()">
         <mat-icon class="mat-icon">comment</mat-icon>
     </div> -->
-    <div class="top-bar-icons" [ngClass]="{'disabled': page === 1 || commentMode}" (click)="prevPage()">
+    <div class="top-bar-icons" [ngClass]="{'disabled': page === 1 || commentMode}" matTooltip="Previous Page"
+        (click)="prevPage()">
         <mat-icon class="mat-icon">keyboard_arrow_left</mat-icon>
     </div>
-    <div class="top-bar-icons" [ngClass]="{'disabled': page === noOfPages || commentMode}" (click)="nextPage()">
+    <div class="top-bar-icons" [ngClass]="{'disabled': page === noOfPages || commentMode}" matTooltip="Next Page"
+        (click)="nextPage()">
         <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
     </div>
-    <div class="top-bar-icons" [ngClass]="{'disabled': commentMode}" (click)="deleteAll()">
+    <div class="top-bar-icons" [ngClass]="{'disabled': commentMode}" matTooltip="Delete all Comments"
+        (click)="deleteAll()">
         <mat-icon class="mat-icon">delete</mat-icon>
     </div>
     <div class="top-bar-icons">
