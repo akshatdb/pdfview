@@ -24,7 +24,7 @@ export class HomeComponent implements OnInit {
     //   this.ckeditorContent = res['html'];
     // })
     this.http.get(environment.base + '/annotations?id=1').subscribe((res: Array<any>) => {
-      this.comments = res[0].comments;
+      this.comments = res[0] ? res[0].comments : [];
     }, err => {
       this.comments = [];
     })
