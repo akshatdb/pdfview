@@ -31,6 +31,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() highlightColor = '#dc93932e';
     @Input() url = 'assets/sample.pdf';
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
+    @Output() deleteComments: EventEmitter<any> = new EventEmitter();
 
     ngOnChanges() {
         this.renderPdf();
@@ -91,6 +92,9 @@ export class DocviewComponent implements OnChanges, OnInit {
         this.commentsChange.emit(this.comments);
     }
 
+    deleteAll() {
+        this.deleteComments.emit(true);
+    }
 
     // PDF Rendering functions
     nextPage() {

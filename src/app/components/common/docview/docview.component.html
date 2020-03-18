@@ -11,6 +11,9 @@
     <div class="top-bar-icons" [ngClass]="{'disabled': page === noOfPages || commentMode}" (click)="nextPage()">
         <mat-icon class="mat-icon">keyboard_arrow_right</mat-icon>
     </div>
+    <div class="top-bar-icons" [ngClass]="{'disabled': commentMode}" (click)="deleteAll()">
+        <mat-icon class="mat-icon">delete</mat-icon>
+    </div>
     <div class="top-bar-icons">
         <p>Page {{page}} of {{noOfPages}}</p>
     </div>

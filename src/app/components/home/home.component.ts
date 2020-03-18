@@ -36,4 +36,10 @@ export class HomeComponent implements OnInit {
       console.log('saved');
     });
   }
+
+  delete() {
+    this.http.delete(environment.base + '/annotations?id=1').subscribe(res => {
+      console.log('deleted');
+    })
+  }
 }

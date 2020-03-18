@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12 mt-4">
         <app-docview class="view-container" [user]="{domainId: name.split(' ').join('.'), name: name}"
-            [comments]="comments" (commentsChange)="save($event)">
+            [comments]="comments" (commentsChange)="save($event)" (deleteComments)="delete()">
         </app-docview>
     </div>
 </div>

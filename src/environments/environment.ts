@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base: "https://pdfviewapi.herokuapp.com/annotations"
+  base: "https://pdfviewapi.herokuapp.com/"
 };
 
 /*
