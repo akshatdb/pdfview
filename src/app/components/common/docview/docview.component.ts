@@ -34,6 +34,9 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
 
     ngOnChanges() {
+        this.page = 1;
+        this.noOfPages = 1;
+        this.loading = false;
         this.renderPdf();
         console.log(this.comments);
     }
