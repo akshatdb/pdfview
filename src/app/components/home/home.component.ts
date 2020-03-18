@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
 
   save(evt) {
     // this.comments = evt;
-    this.http.post(environment.base + '/annotations?id=1', { comments: this.comments, id: '1' }).subscribe(res => {
+    this.http.post(environment.base + '/annotations?id=1', { comments: evt, id: '1' }).subscribe(res => {
       console.log('saved');
     });
   }
