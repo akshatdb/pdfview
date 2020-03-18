@@ -1,5 +1,10 @@
 <div class="row">
     <div class="col-md-12 mt-4">
-        <app-docview class="view-container" [user]="{domainId: user}" [(comments)]="comments"></app-docview>
+        <app-docview class="view-container" [user]="{domainId: user}" [comments]="comments"
+            (commentsChange)="save($event)">
+        </app-docview>
     </div>
 </div>
+<!-- <div #pdfcontainer (window:resize)="renderPdf()" style="height: 80vh">
+    <canvas #pdfcanvas></canvas>
+</div> -->

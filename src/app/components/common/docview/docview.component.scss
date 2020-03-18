@@ -6,7 +6,9 @@
   border: 1px solid #d2c7c7;
   .img-layer,
   .comment-layer,
-  .event-layer {
+  .event-layer,
+  .canvas-layer,
+  .loader-layer {
     position: absolute;
     left: 0px;
     width: 100%;
@@ -27,17 +29,33 @@
   height: 32px;
   border: 1px solid #d2c7c7;
   border-bottom: none;
+  position: relative;
+  p {
+    display: inline;
+    padding: 5px 5px !important;
+    position: absolute;
+    right: 0;
+  }
 }
 .top-bar-icons {
   display: inline;
-  color: black;
+  color: rgb(70, 69, 69);
   .mat-icon {
-    color: grey;
+    color: rgb(70, 69, 69);
     padding: 0 5px;
     padding-right: 7px;
     padding-top: 3px;
     height: 32px;
     width: 35px;
+    &:hover {
+      color: rgb(49, 49, 49);
+    }
+  }
+  &.disabled {
+    .mat-icon {
+      color: grey;
+      cursor: default;
+    }
   }
   &:hover {
     color: grey;
@@ -61,4 +79,19 @@
 }
 .comment-container {
   position: absolute;
+}
+
+.loader-layer {
+  background-color: white;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out 0s;
+  &.loading {
+    opacity: 1;
+  }
+  .loader {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin: auto;
+  }
 }

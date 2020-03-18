@@ -2,6 +2,8 @@ import { Component, OnChanges, OnInit, Renderer2, ElementRef, ViewChild, Inject,
 import { fromEvent } from 'rxjs';
 import { map, switchMap, takeUntil, pairwise, tap } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+declare var pdfjsLib: any;
+
 
 @Component({
     selector: 'app-docview',
@@ -15,18 +17,24 @@ export class DocviewComponent implements OnChanges, OnInit {
     fixedFromTop;
     commentShow = false;
     commentMode = false;
-    page = 0;
+    page = 1;
+    noOfPages = 1;
+    loading = false;
     @ViewChild('commentLayer', { static: true }) commentsLayer: ElementRef;
     @ViewChild('containerLayer', { static: true }) containerLayer: ElementRef;
     @ViewChild('eventLayer', { static: true }) eventLayer: ElementRef;
+    @ViewChild('pdfcanvas', { static: true }) canvasEl: ElementRef;
+    @ViewChild('pdfcontainer', { static: true }) container: ElementRef;
     @Input() comments = [];
     @Input() user = {};
     @Input() domainKey = 'domainId';
     @Input() highlightColor = '#dc93932e';
+    @Input() url = 'assets/sample.pdf';
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
 
     ngOnChanges() {
-
+        this.renderPdf();
+        console.log(this.comments);
     }
 
     ngOnInit() {
@@ -84,6 +92,54 @@ export class DocviewComponent implements OnChanges, OnInit {
     }
 
 
+    // PDF Rendering functions
+    nextPage() {
+        this.page++;
+        let context = this.canvasEl.nativeElement.getContext('2d');
+        context.clearRect(0, 0, this.canvasEl.nativeElement.width, this.canvasEl.nativeElement.height);
+        this.renderPdf();
+    }
+    prevPage() {
+        this.page--;
+        let context = this.canvasEl.nativeElement.getContext('2d');
+        context.clearRect(0, 0, this.canvasEl.nativeElement.width, this.canvasEl.nativeElement.height);
+        this.renderPdf();
+    }
+    renderPdf() {
+        if (!this.loading) {
+            this.loading = true;
+            pdfjsLib.getDocument(this.url)
+                .then((pdf) => {
+                    this.noOfPages = pdf.numPages;
+                    return pdf.getPage(this.page);
+                })
+                .then((page) => {
+
+                    let viewport = page.getViewport(1.0);
+                    let scale = this.container.nativeElement.clientHeight / viewport.height;
+                    viewport = page.getViewport(scale);
+
+
+                    let context = this.canvasEl.nativeElement.getContext('2d');
+
+                    this.canvasEl.nativeElement.height = viewport.height;
+                    this.canvasEl.nativeElement.width = viewport.width;
+
+                    let renderContext = {
+                        canvasContext: context,
+                        viewport: viewport
+                    };
+
+                    let pageRendering = page.render(renderContext);
+                    let completeCallback = pageRendering._internalRenderTask.callback;
+                    let that = this;
+                    pageRendering._internalRenderTask.callback = function (error) {
+                        completeCallback.call(this, error);
+                        that.loading = false;
+                    };
+                });
+        }
+    }
     private captureEvents(el: HTMLElement) {
         // this will capture all mousedown events from the canvas element
         fromEvent(el, 'mousedown')

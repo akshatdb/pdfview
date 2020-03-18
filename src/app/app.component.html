@@ -2,14 +2,14 @@
 <div class="main-div">
     <app-sidenav [state]="navstate" [ngClass]="{'navopen': navstate}" class="side-nav"></app-sidenav>
     <div [ngClass]="{'main-shrunk': navstate}" class="main-content" [@routeSlide]="animateRoute(outlet)">
-        <mat-card class="main-card">
+        <!-- <mat-card class="main-card">
             <mat-card-header>
                 <mat-icon mat-card-avatar class="header-icon rightmargin-0">{{outlet?.activatedRouteData?.icon}}</mat-icon>
                 <mat-card-title class="card-title">{{outlet?.activatedRouteData?.title}}</mat-card-title>
             </mat-card-header>
-        </mat-card>
+        </mat-card> -->
         <mat-card class="main-card mt-2">
-                <router-outlet #outlet="outlet"></router-outlet>
+            <router-outlet #outlet="outlet"></router-outlet>
         </mat-card>
     </div>
 </div>
