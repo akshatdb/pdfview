@@ -13,7 +13,6 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { CommonModule } from '@angular/common';
-import { SketchpadComponent } from './components/common/sketchpad/sketchpad.component';
 import { DocviewComponent, CommentDialog } from './components/common/docview/docview.component';
 
 @NgModule({
@@ -23,7 +22,6 @@ import { DocviewComponent, CommentDialog } from './components/common/docview/doc
     SidenavComponent,
     FooterComponent,
     HomeComponent,
-    SketchpadComponent,
     DocviewComponent,
     CommentDialog
   ],

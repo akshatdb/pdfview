@@ -67,7 +67,7 @@ export class DocviewComponent implements OnChanges, OnInit {
             data: {
                 mode: 'view',
                 comment: comment,
-                user: this.user[this.domainKey]
+                user: this.user[this.domainKey],
             }
         });
         commentDialog.afterClosed().subscribe(res => {
@@ -85,7 +85,7 @@ export class DocviewComponent implements OnChanges, OnInit {
             page: this.page,
             comment: [{
                 comment: comment,
-                user: this.user[this.domainKey]
+                user: this.user
             }]
         }];
         this.commentsChange.emit(this.comments);
@@ -294,9 +294,11 @@ export class CommentDialog implements OnInit {
     commentStr = '';
     mode = '';
     comments = [];
+    user;
     ngOnInit() {
         this.mode = this.data.mode;
         this.comments = this.data.mode === 'view' ? this.data.comment : [];
+        this.user = this.data.user;
     }
     cancel(): void {
         this.dialogRef.close();
