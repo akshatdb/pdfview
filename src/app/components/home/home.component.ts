@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
   delete() {
     this.http.delete(environment.base + '/annotations?id=1').subscribe(res => {
       console.log('deleted');
+      this.comments = [];
     })
   }
 }
