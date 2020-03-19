@@ -30,7 +30,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() domainKey = 'domainId';
     @Input() nameKey = 'name';
     @Input() highlightColor = '#dc93932e';
-    @Input() url = 'assets/sample.pdf';
+    @Input() url;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
 
@@ -38,7 +38,8 @@ export class DocviewComponent implements OnChanges, OnInit {
         this.page = 1;
         this.noOfPages = 1;
         this.loading = false;
-        this.renderPdf();
+        if (this.url)
+            this.renderPdf();
         console.log(this.comments);
     }
 
