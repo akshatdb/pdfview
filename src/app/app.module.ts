@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { CommonModule } from '@angular/common';
 import { DocviewComponent, CommentDialog } from './components/common/docview/docview.component';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { DocviewComponent, CommentDialog } from './components/common/docview/doc
     HttpClientModule,
     CKEditorModule
   ],
+  providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   entryComponents: [CommentDialog],
   bootstrap: [AppComponent]
 })
