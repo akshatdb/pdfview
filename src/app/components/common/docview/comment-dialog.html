@@ -1,19 +1,23 @@
-<mat-toolbar>{{mode==='view'?'View':'Add'}} Comment</mat-toolbar>
+<!-- <mat-toolbar>{{mode==='view'?'View':'Add'}} Comment</mat-toolbar> -->
 <div class="row">
     <ng-container *ngIf="comments && comments.length > 0">
-        <div class="col-md-12 mt-4 comment-class" *ngFor="let comment of comments"
-            [ngClass]="{'our-comment': user === comment.user, 'their-comment': user !== comment.user}">
-            {{comment.comment}}
+        <div class="col-md-12 comment-class" *ngFor="let comment of comments">
+            <div class="comment-class"
+                [ngClass]="{'our-comment': user === comment.user[domainKey], 'their-comment': user !== comment.user[domainKey]}">
+                <span class="comment-header">{{comment.user[nameKey]}}</span>
+                <span class="comment-content">{{comment.comment}}</span>
+                <span class="comment-footer">{{comment.time | dateAgo}}</span>
+            </div>
         </div>
     </ng-container>
     <div class="col-md-12 mt-4" *ngIf="mode==='add'">
         <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Comment</mat-label>
-            <textarea matInput [(ngModel)]="commentStr"></textarea>
+            <mat-label>{{mode==='add'?'Comment':'Reply'}}</mat-label>
+            <input type="text" matInput [(ngModel)]="commentStr" />
         </mat-form-field>
     </div>
     <div class="col-md-12 mt-4" *ngIf="mode==='add'">
-        <button mat-button (click)="save()">Save</button>
-        <button mat-button (click)="cancel()">Cancel</button>
+        <button mat-raised-button class="btn-info mr-1" (click)="save()">Send</button>
+        <button mat-raised-button class="btn-danger" (click)="cancel()">Cancel</button>
     </div>
 </div>

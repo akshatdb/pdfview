@@ -1,3 +1,18 @@
 .full-width {
   width: 100%;
 }
+
+.comment-class {
+  .comment-header {
+    display: block;
+    font-size: 14px;
+  }
+  .comment-content {
+    display: block;
+    font-size: 25px;
+  }
+  .comment-footer {
+    font-size: 12px;
+    float: right;
+  }
+}

@@ -15,6 +15,7 @@ import { CKEditorModule } from 'ng2-ckeditor';
 import { CommonModule } from '@angular/common';
 import { DocviewComponent, CommentDialog } from './components/common/docview/docview.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { DateAgoPipe } from './pipes/dateago.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     FooterComponent,
     HomeComponent,
     DocviewComponent,
-    CommentDialog
+    CommentDialog,
+    DateAgoPipe
   ],
   imports: [
     BrowserModule,

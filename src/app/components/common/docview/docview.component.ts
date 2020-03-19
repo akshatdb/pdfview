@@ -28,6 +28,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() comments = [];
     @Input() user = {};
     @Input() domainKey = 'domainId';
+    @Input() nameKey = 'name';
     @Input() highlightColor = '#dc93932e';
     @Input() url = 'assets/sample.pdf';
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
@@ -72,6 +73,8 @@ export class DocviewComponent implements OnChanges, OnInit {
                 mode: 'view',
                 comment: comment,
                 user: this.user[this.domainKey],
+                domainKey: this.domainKey,
+                nameKey: this.nameKey
             }
         });
         commentDialog.afterClosed().subscribe(res => {
@@ -89,7 +92,8 @@ export class DocviewComponent implements OnChanges, OnInit {
             page: this.page,
             comment: [{
                 comment: comment,
-                user: this.user
+                user: this.user,
+                time: Date.now()
             }]
         }];
         this.commentsChange.emit(this.comments);
@@ -302,10 +306,14 @@ export class CommentDialog implements OnInit {
     mode = '';
     comments = [];
     user;
+    domainKey = 'domainId';
+    nameKey = 'name';
     ngOnInit() {
         this.mode = this.data.mode;
         this.comments = this.data.mode === 'view' ? this.data.comment : [];
         this.user = this.data.user;
+        this.domainKey = this.data.domainKey ? this.data.domainKey : this.domainKey;
+        this.nameKey = this.data.nameKey ? this.data.nameKey : this.nameKey;
     }
     cancel(): void {
         this.dialogRef.close();

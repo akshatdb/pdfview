@@ -53,6 +53,13 @@ app-data-table {
     letter-spacing: 2px;
   }
 }
-.form-error{
-  color:red;
+.form-error {
+  color: red;
+}
+
+.comment-view-dialog {
+  width: 50vw;
+  @media screen and (max-width: 767px) {
+    width: 100vw;
+  }
 }
