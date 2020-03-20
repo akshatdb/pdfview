@@ -96,7 +96,6 @@ export class DocviewComponent implements OnChanges, OnInit {
             user: this.user,
             time: Date.now()
         };
-        this.comments = [...this.comments, newComment];
         this.commentsChange.emit(newComment);
     }
 

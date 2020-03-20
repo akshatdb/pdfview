@@ -34,7 +34,7 @@ export class HomeComponent implements OnInit {
     // this.comments = evt;
     evt['docid'] = this.id;
     this.http.post(environment.base + `/annotations`, evt).subscribe(res => {
-      console.log('saved');
+      this.getComments();
     });
   }
 
