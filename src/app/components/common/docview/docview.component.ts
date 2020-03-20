@@ -35,10 +35,10 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
     @Output() deleteSingle: EventEmitter<any> = new EventEmitter();
 
-    ngOnChanges() {
+    ngOnChanges(changes) {
         this.page = 1;
         this.noOfPages = 1;
-        if (this.url && !this.loading)
+        if (this.url && !this.loading && changes.url)
             this.renderPdf();
     }
 
@@ -96,6 +96,7 @@ export class DocviewComponent implements OnChanges, OnInit {
             user: this.user,
             time: Date.now()
         };
+        this.comments = [...this.comments, newComment];
         this.commentsChange.emit(newComment);
     }
 
