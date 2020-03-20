@@ -23,8 +23,8 @@ export class HomeComponent implements OnInit {
   }
 
   getComments() {
-    this.http.get(environment.base + `/annotations?id=${this.id}`).subscribe((res: Array<any>) => {
-      this.comments = res[0] ? res[0].comments : [];
+    this.http.get(environment.base + `/annotations?docid=${this.id}`).subscribe((res: Array<any>) => {
+      this.comments = res ? res : [];
     }, err => {
       this.comments = [];
     });
@@ -32,7 +32,8 @@ export class HomeComponent implements OnInit {
 
   save(evt) {
     // this.comments = evt;
-    this.http.post(environment.base + `/annotations?id=${this.id}`, { comments: evt, id: this.id }).subscribe(res => {
+    evt['docid'] = this.id;
+    this.http.post(environment.base + `/annotations`, evt).subscribe(res => {
       console.log('saved');
     });
   }
@@ -57,17 +58,18 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  delete() {
-    this.http.delete(environment.base + `/annotations?id=${this.id}`).subscribe(res => {
-      console.log('deleted');
-      this.comments = [];
-    })
+  delete(evt?) {
+    if (evt && evt._id) {
+      this.http.delete(environment.base + `/annotations?docid=${this.id}&_id=${evt._id}`).subscribe(res => {
+        console.log('deleted');
+        this.getComments();
+      });
+    }
+    else {
+      this.http.delete(environment.base + `/annotations/all?docid=${this.id}`).subscribe(res => {
+        console.log('deleted');
+        this.comments = [];
+      });
+    }
   }
-
-  // uuidv4() {
-  //   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-  //     var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
-  //     return v.toString(16);
-  //   });
-  // }
 }

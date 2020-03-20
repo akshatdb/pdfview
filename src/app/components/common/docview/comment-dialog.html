@@ -1,12 +1,13 @@
 <!-- <mat-toolbar>{{mode==='view'?'View':'Add'}} Comment</mat-toolbar> -->
 <div class="row">
-    <ng-container *ngIf="comments && comments.length > 0">
-        <div class="col-md-12 comment-class" *ngFor="let comment of comments">
-            <div class="comment-class"
-                [ngClass]="{'our-comment': user === comment.user[domainKey], 'their-comment': user !== comment.user[domainKey]}">
-                <span class="comment-header">{{comment.user[nameKey]}}</span>
-                <span class="comment-content">{{comment.comment}}</span>
-                <span class="comment-footer">{{comment.time | dateAgo}}</span>
+    <ng-container *ngIf="mode === 'view'">
+        <div class="col-md-12 comment-class">
+            <div class="comment-class">
+                <span class="comment-header">{{comment?.user[nameKey]}} <mat-icon class="delete-comment"
+                        (click)="deleteSingle(comment._id)">
+                        delete</mat-icon></span>
+                <span class="comment-content">{{comment?.comment}}</span>
+                <span class="comment-footer">{{comment?.time | dateAgo}}</span>
             </div>
         </div>
     </ng-container>

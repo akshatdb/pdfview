@@ -78,7 +78,8 @@
   cursor: crosshair;
   pointer-events: unset !important;
 }
-.comment-container {
+.comment-container,
+.user-container {
   position: absolute;
 }
 

@@ -6,7 +6,8 @@
     </div>
     <div class="col-md-12 mt-2">
         <app-docview class="view-container" [url]="url" [user]="{domainId: name.split(' ').join('.'), name: name}"
-            [comments]="comments" (commentsChange)="save($event)" (deleteComments)="delete()">
+            [comments]="comments" (commentsChange)="save($event)" (deleteComments)="delete()"
+            (deleteSingle)="delete($event)">
         </app-docview>
     </div>
 </div>

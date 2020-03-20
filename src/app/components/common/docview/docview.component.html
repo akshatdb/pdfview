@@ -37,10 +37,18 @@
         <ng-container *ngFor="let comment of comments">
             <div *ngIf="comment.page === page" class="comment-container" [style.top]="comment.y"
                 [style.left]="comment.x" [style.width]="comment.width" [style.height]="comment.height"
-                [style.background]="highlightColor" (click)="viewComment(comment.comment)">
+                [style.background]="highlightColor" (click)="viewComment(comment)">
             </div>
         </ng-container>
     </div>
+    <!-- <div class="comment-layer" #userLayer [hidden]="loading">
+        <ng-container *ngFor="let comment of comments">
+            <div *ngIf="comment.page === page" class="user-container" [style.top]="comment.y" [style.right]="0"
+                [style.width]="comment.width" (click)="viewUser(comment)">
+                <mat-icon>account_circle</mat-icon>
+            </div>
+        </ng-container>
+    </div> -->
     <div class="event-layer" [ngClass]="{'selector-pointer':commentMode}" #eventLayer>
 
     </div>

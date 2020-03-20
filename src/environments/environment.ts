@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  base: "https://pdfviewapi.herokuapp.com"
+  base: "http://localhost:3000"
 };
 
 /*

@@ -33,14 +33,13 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() url;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
+    @Output() deleteSingle: EventEmitter<any> = new EventEmitter();
 
     ngOnChanges() {
         this.page = 1;
         this.noOfPages = 1;
-        this.loading = false;
-        if (this.url)
+        if (this.url && !this.loading)
             this.renderPdf();
-        console.log(this.comments);
     }
 
     ngOnInit() {
@@ -79,26 +78,44 @@ export class DocviewComponent implements OnChanges, OnInit {
             }
         });
         commentDialog.afterClosed().subscribe(res => {
-            if (res && res.length > 0) {
-                console.log('reply');
-            };
+            if (res) {
+                if (res.delete) {
+                    this.deleteSingle.emit({ _id: res.delete })
+                }
+            }
         });
     }
     saveComment(evt, comment) {
-        this.comments = [...this.comments, {
+        let newComment = {
             x: evt.x,
             y: evt.y,
             height: evt.height,
             width: evt.width,
             page: this.page,
-            comment: [{
-                comment: comment,
-                user: this.user,
-                time: Date.now()
-            }]
-        }];
-        this.commentsChange.emit(this.comments);
+            comment: comment,
+            user: this.user,
+            time: Date.now()
+        };
+        this.comments = [...this.comments, newComment];
+        this.commentsChange.emit(newComment);
     }
+
+    uuidv4() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    }
+
+    // intersectionOverUnion(comment, newComment){
+    //     const w_intersection = Math.min(comment.x + comment.width, newComment.x + newComment.width) - Math.max(comment.x, newComment.x);
+    //     const h_intersection = Math.min(comment.xy + comment.height, newComment.y + newComment.height) - Math.max(comment.y, newComment.y);
+    //     if (w_intersection <= 0 || h_intersection <= 0)
+    //         return 0
+    //     const I = w_intersection * h_intersection;
+    //     const U = comment.height * comment.width + newComment.height * newComment.width - I; 
+    //     return I/U;
+    // }
 
     deleteAll() {
         this.deleteComments.emit(true);
@@ -305,16 +322,21 @@ export class CommentDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any) { }
     commentStr = '';
     mode = '';
-    comments = [];
+    comment = {};
     user;
     domainKey = 'domainId';
     nameKey = 'name';
     ngOnInit() {
         this.mode = this.data.mode;
-        this.comments = this.data.mode === 'view' ? this.data.comment : [];
+        this.comment = this.data.mode === 'view' ? this.data.comment : {};
         this.user = this.data.user;
         this.domainKey = this.data.domainKey ? this.data.domainKey : this.domainKey;
         this.nameKey = this.data.nameKey ? this.data.nameKey : this.nameKey;
+    }
+    deleteSingle(id) {
+        this.dialogRef.close({
+            delete: id
+        })
     }
     cancel(): void {
         this.dialogRef.close();
