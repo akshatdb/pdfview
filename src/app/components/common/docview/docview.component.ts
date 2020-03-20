@@ -32,6 +32,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() highlightColor = '#dc93932e';
     @Input() url;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
+    @Output() newComment: EventEmitter<any> = new EventEmitter();
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
     @Output() deleteSingle: EventEmitter<any> = new EventEmitter();
 
@@ -85,7 +86,8 @@ export class DocviewComponent implements OnChanges, OnInit {
                     this.deleteSingle.emit({ _id: res.delete })
                 }
                 if (res.deleteLocal) {
-                    this.comments = this.comments.filter(row => row._id === res.deleteLocal);
+                    this.comments = this.comments.filter(row => !row.localid || row.localid !== res.deleteLocal);
+                    this.commentsChange.emit(this.comments);
                 }
             }
         });
@@ -102,8 +104,9 @@ export class DocviewComponent implements OnChanges, OnInit {
             time: Date.now()
         };
         this.comments = [...this.comments, newComment];
-        this.commentsChange.emit(newComment);
-        newComment['_id'] = this.uuidv4();
+        this.commentsChange.emit(this.comments);
+        this.newComment.emit(newComment);
+        newComment['localid'] = this.uuidv4();
     }
 
     uuidv4() {
@@ -339,15 +342,15 @@ export class CommentDialog implements OnInit {
         this.domainKey = this.data.domainKey ? this.data.domainKey : this.domainKey;
         this.nameKey = this.data.nameKey ? this.data.nameKey : this.nameKey;
     }
-    deleteSingle(id) {
-        if (id) {
+    deleteSingle(comment) {
+        if (comment._id) {
             this.dialogRef.close({
-                delete: id
+                delete: comment._id
             })
         }
         else {
             this.dialogRef.close({
-                deleteLocal: id
+                deleteLocal: comment.localid
             })
         }
     }
