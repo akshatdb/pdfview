@@ -73,7 +73,7 @@ export class DocviewComponent implements OnChanges, OnInit {
         })
     }
 
-    viewComment(comment, evt?) {
+    viewComment(comment) {
         let commentDialog = this.md.open(CommentDialog, {
             panelClass: 'comment-view-dialog',
             data: {
@@ -187,14 +187,17 @@ export class DocviewComponent implements OnChanges, OnInit {
                 .then((page) => {
 
                     let viewport = page.getViewport(1.0);
-                    let scale = this.container.nativeElement.clientHeight / viewport.height;
-                    viewport = page.getViewport(scale);
-
-
+                    let scale = 1;
+                    const padding = 2 * this.getNumFromPixel(window.getComputedStyle(this.el.nativeElement.parentElement, null).getPropertyValue('padding-left'));
+                    if (this.el.nativeElement.parentElement.clientWidth - padding < viewport.width) {
+                        scale = (this.el.nativeElement.parentElement.clientWidth - padding) / viewport.width;
+                        viewport = page.getViewport(scale);
+                    }
                     let context = this.canvasEl.nativeElement.getContext('2d');
-
                     this.canvasEl.nativeElement.height = viewport.height;
                     this.canvasEl.nativeElement.width = viewport.width;
+                    this.containerLayer.nativeElement.parentElement.style.height = viewport.height + 2 + 'px'
+                    this.containerLayer.nativeElement.parentElement.style.width = viewport.width + 2 + 'px'
 
                     let renderContext = {
                         canvasContext: context,
@@ -268,7 +271,17 @@ export class DocviewComponent implements OnChanges, OnInit {
                 break;
             case 'move':
                 // this.currDiv
-                if (this.currDiv) {
+                if (!this.currDiv) {
+                    this.currDiv = this.renderer.createElement('div');
+                    this.renderer.addClass(this.currDiv, 'comment-container');
+                    this.currDiv.style.position = 'absolute';
+                    this.currDiv.style.left = pointer.x + 'px';
+                    this.currDiv.style.top = pointer.y + 'px';
+                    this.currDiv.style.background = '#8080803d';
+                    this.fixedFromLeft = true;
+                    this.renderer.appendChild(this.commentsLayer.nativeElement, this.currDiv);
+                }
+                else {
                     // handling x axis - 
                     if (this.fixedFromLeft && pointer.x < this.getNumFromPixel(this.currDiv.style.left)) {
                         this.fixedFromLeft = false;
@@ -318,8 +331,8 @@ export class DocviewComponent implements OnChanges, OnInit {
     dispatchTouch(el, evt) {
         let type;
         switch (evt.type) {
-            case 'mousemove': type = 'start'; break;
-            case 'mousemove': type = 'move'; break;
+            case 'touchstart': type = 'start'; break;
+            case 'touchmove': type = 'move'; break;
             case 'touchend': type = 'end'; break;
             default: type = 'move'; break
         }
@@ -336,7 +349,7 @@ export class DocviewComponent implements OnChanges, OnInit {
         let type;
         switch (evt.type) {
             case 'mousedown': type = 'start'; break;
-            case 'touchmove': type = 'move'; break;
+            case 'mousemove': type = 'move'; break;
             case 'mouseup': type = 'end'; break;
             // case 'mouseleave': type = 'end'; break;
             default: type = 'move'; break;

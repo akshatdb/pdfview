@@ -1,4 +1,4 @@
-import { OnInit, Directive, HostListener, ElementRef, EventEmitter, Output } from '@angular/core';
+import { OnInit, Directive, HostListener, ElementRef, EventEmitter, Output, Input } from '@angular/core';
 import { Observable, fromEvent } from 'rxjs';
 import { map, takeUntil, flatMap, switchMap, tap } from 'rxjs/operators';
 
@@ -7,42 +7,125 @@ import { map, takeUntil, flatMap, switchMap, tap } from 'rxjs/operators';
 })
 export class Draggable implements OnInit {
 
-    mouseup = new EventEmitter<MouseEvent>();
-    mousedown = new EventEmitter<MouseEvent>();
-    mousemove = new EventEmitter<MouseEvent>();
+    mouseup = new EventEmitter<MouseEvent | {
+        clientX: any,
+        clientY: any
+    }>();
+    mousedown = new EventEmitter<MouseEvent | {
+        clientX: any,
+        clientY: any
+    }>();
+    mousemove = new EventEmitter<MouseEvent | {
+        clientX: any,
+        clientY: any
+    }>();
     @Output()
-    clicked = new EventEmitter<MouseEvent>();
+    clicked = new EventEmitter<MouseEvent | {
+        clientX: any,
+        clientY: any
+    }>();
     @Output()
     positionChange = new EventEmitter<any>();
+    @Output()
+    longpress = new EventEmitter<any>();
+    @Input()
+    longPressDuration = 1000;
 
     mousedrag: Observable<{ top, left }>;
 
 
     flagX;
     flagY;
+    timerState = false;
+    timer;
+    @HostListener('document:touchend', ['$event'])
     @HostListener('document:mouseup', ['$event'])
-    onMouseup(event: MouseEvent) {
-        if (event.target['parentElement'] === this.element.nativeElement && event.screenX === this.flagX && event.screenY === this.flagY) {
-            this.clicked.emit(event);
-            return false;
+    onMouseup(event: MouseEvent | TouchEvent) {
+        if (event instanceof MouseEvent) {
+            if (event.target['parentElement'] === this.element.nativeElement && event.screenX === this.flagX && event.screenY === this.flagY) {
+                if (this.timerState)
+                    this.clicked.emit(event);
+                clearTimeout(this.timer);
+                return false;
+            }
+            this.mouseup.emit(event);
+            this.flagX = undefined;
+            this.flagY = undefined;
+            this.timerState = false;
         }
-        this.mouseup.emit(event);
-        this.flagX = undefined;
-        this.flagY = undefined;
-    }
+        else {
+            if (event.target['parentElement'] === this.element.nativeElement) {
+                if (event.target['parentElement'] === this.element.nativeElement && event.changedTouches[0].screenX === this.flagX && event.changedTouches[0].screenY === this.flagY) {
+                    if (this.timerState) {
+                        this.clicked.emit({
+                            clientX: event.changedTouches[0].clientX,
+                            clientY: event.changedTouches[0].clientY
+                        });
+                    }
+                    clearTimeout(this.timer);
+                    return false;
+                }
+                this.mouseup.emit({
+                    clientX: event.changedTouches[0].clientX,
+                    clientY: event.changedTouches[0].clientY
+                });
+                this.flagX = undefined;
+                this.flagY = undefined;
+                this.timerState = false;
 
+            }
+        }
+    }
+    @HostListener('document:touchstart', ['$event'])
     @HostListener('mousedown', ['$event'])
-    onMousedown(event: MouseEvent) {
-        this.mousedown.emit(event);
-        this.flagX = event.screenX;
-        this.flagY = event.screenY;
+    onMousedown(event: MouseEvent | TouchEvent) {
+        if (event instanceof MouseEvent) {
+            this.mousedown.emit(event);
+            this.flagX = event.screenX;
+            this.flagY = event.screenY;
+            this.timerState = true;
+            this.timer = setTimeout(() => {
+                if (this.timerState) {
+                    this.longpress.emit(event);
+                    this.timerState = false;
+                }
+            }, this.longPressDuration);
+        }
+        else {
+            if (event.target['parentElement'] === this.element.nativeElement) {
+                this.mousedown.emit({
+                    clientX: event.changedTouches[0].clientX,
+                    clientY: event.changedTouches[0].clientY
+                });
+                this.flagX = event.changedTouches[0].screenX;
+                this.flagY = event.changedTouches[0].screenY;
+                this.timerState = true;
+                this.timer = setTimeout(() => {
+                    if (this.timerState) {
+                        this.longpress.emit(event);
+                        this.timerState = false;
+                    }
+                }, this.longPressDuration);
+            }
+        }
         return false; // Call preventDefault() on the event
     }
-
+    @HostListener('document:touchmove', ['$event'])
     @HostListener('document:mousemove', ['$event'])
-    onMousemove(event: MouseEvent) {
-        this.mousemove.emit(event);
+    onMousemove(event: MouseEvent | TouchEvent) {
+        if (event instanceof MouseEvent) {
+            this.mousemove.emit(event);
+        }
+        else {
+            if (event.target['parentElement'] === this.element.nativeElement) {
+                this.mousemove.emit({
+                    clientX: event.changedTouches[0].clientX,
+                    clientY: event.changedTouches[0].clientY
+                });
+            }
+        }
     }
+
 
     constructor(public element: ElementRef) {
         this.element.nativeElement.style.position = 'absolute';

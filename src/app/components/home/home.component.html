@@ -1,8 +1,12 @@
 <div class="row">
-    <div class="col-md-12 text-left">
+    <div class="col-md-2 text-left">
         <input type="file" (change)="fileHandle($event)">
+    </div>
+    <div class="col-md-2 text-left">
         <input type="text" [(ngModel)]="id">
-        <button mat-raised-button class="btn-primary ml-2" [disabled]="!(id && file)" (click)="loadFile()">Load</button>
+    </div>
+    <div class="col-md-2 text-left">
+        <button mat-raised-button class="btn-primary ml-3" [disabled]="!(id && file)" (click)="loadFile()">Load</button>
     </div>
     <div class="col-md-12 mt-2">
         <app-docview class="view-container" [url]="url" [user]="{domainId: name.split(' ').join('.'), name: name}"
