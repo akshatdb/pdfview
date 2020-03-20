@@ -20,6 +20,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     page = 1;
     noOfPages = 1;
     loading = false;
+    pdf;
     @ViewChild('commentLayer', { static: true }) commentsLayer: ElementRef;
     @ViewChild('containerLayer', { static: true }) containerLayer: ElementRef;
     @ViewChild('eventLayer', { static: true }) eventLayer: ElementRef;
@@ -83,6 +84,7 @@ export class DocviewComponent implements OnChanges, OnInit {
         commentDialog.afterClosed().subscribe(res => {
             if (res) {
                 if (res.delete) {
+                    this.comments = this.comments.filter(row => !row._id || row._id !== res.delete);
                     this.deleteSingle.emit({ _id: res.delete })
                 }
                 if (res.deleteLocal) {
@@ -131,6 +133,15 @@ export class DocviewComponent implements OnChanges, OnInit {
     }
 
     // PDF Rendering functions
+    loadPdf() {
+        return new Promise((resolve, reject) => {
+            if (this.pdf)
+                resolve(this.pdf);
+            else {
+
+            }
+        })
+    }
     nextPage() {
         this.page++;
         let context = this.canvasEl.nativeElement.getContext('2d');
