@@ -322,7 +322,7 @@ export class CommentDialog implements OnInit {
         @Inject(MAT_DIALOG_DATA) public data: any) { }
     commentStr = '';
     mode = '';
-    comment = {};
+    comment: any;
     user;
     domainKey = 'domainId';
     nameKey = 'name';
