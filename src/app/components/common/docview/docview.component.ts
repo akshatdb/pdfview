@@ -34,11 +34,11 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() url;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
     @Output() newComment: EventEmitter<any> = new EventEmitter();
+    @Output() updateComment: EventEmitter<any> = new EventEmitter();
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
     @Output() deleteSingle: EventEmitter<any> = new EventEmitter();
 
     ngOnChanges(changes) {
-
         if (this.url && !this.loading && changes.url) {
             this.page = 1;
             this.noOfPages = 1;
@@ -70,7 +70,7 @@ export class DocviewComponent implements OnChanges, OnInit {
         })
     }
 
-    viewComment(comment) {
+    viewComment(comment, evt?) {
         let commentDialog = this.md.open(CommentDialog, {
             panelClass: 'comment-view-dialog',
             data: {
@@ -100,6 +100,8 @@ export class DocviewComponent implements OnChanges, OnInit {
             y: evt.y,
             height: evt.height,
             width: evt.width,
+            iconx: this.getNumFromPixel(evt.x) + this.getNumFromPixel(evt.width) + '%',
+            icony: this.getNumFromPixel(evt.y) + this.getNumFromPixel(evt.height) + '%',
             page: this.page,
             comment: comment,
             user: this.user,
@@ -132,6 +134,13 @@ export class DocviewComponent implements OnChanges, OnInit {
         this.deleteComments.emit(true);
     }
 
+    posChange(comment, event) {
+        comment.iconx = event.left;
+        comment.icony = event.top;
+        this.updateComment.emit(comment);
+        this.commentsChange.emit(this.comments);
+    }
+
     // PDF Rendering functions
     loadPdf() {
         return new Promise((resolve, reject) => {
@@ -154,6 +163,8 @@ export class DocviewComponent implements OnChanges, OnInit {
         context.clearRect(0, 0, this.canvasEl.nativeElement.width, this.canvasEl.nativeElement.height);
         this.renderPdf();
     }
+
+
     renderPdf() {
         if (!this.loading) {
             this.loading = true;

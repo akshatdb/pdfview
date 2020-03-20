@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
 import { DocviewComponent, CommentDialog } from './components/common/docview/docview.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DateAgoPipe } from './pipes/dateago.pipe';
+import { Draggable } from './directives/draggable.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DateAgoPipe } from './pipes/dateago.pipe';
     HomeComponent,
     DocviewComponent,
     CommentDialog,
-    DateAgoPipe
+    DateAgoPipe,
+    Draggable
   ],
   imports: [
     BrowserModule,

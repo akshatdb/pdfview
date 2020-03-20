@@ -82,6 +82,9 @@
 .user-container {
   position: absolute;
 }
+.user-container {
+  user-select: none;
+}
 
 .loader-layer {
   background-color: white;

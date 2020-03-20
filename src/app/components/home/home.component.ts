@@ -38,6 +38,12 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  update(evt) {
+    this.http.put(environment.base + `/annotations?docid=${this.id}&_id=${evt._id}`, evt).subscribe(res => {
+      this.getComments();
+    })
+  }
+
 
   fileHandle(evt) {
     this.file = evt.target.files[0];
