@@ -36,10 +36,12 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Output() deleteSingle: EventEmitter<any> = new EventEmitter();
 
     ngOnChanges(changes) {
-        this.page = 1;
-        this.noOfPages = 1;
-        if (this.url && !this.loading && changes.url)
+
+        if (this.url && !this.loading && changes.url) {
+            this.page = 1;
+            this.noOfPages = 1;
             this.renderPdf();
+        }
     }
 
     ngOnInit() {
@@ -82,6 +84,9 @@ export class DocviewComponent implements OnChanges, OnInit {
                 if (res.delete) {
                     this.deleteSingle.emit({ _id: res.delete })
                 }
+                if (res.deleteLocal) {
+                    this.comments = this.comments.filter(row => row._id === res.deleteLocal);
+                }
             }
         });
     }
@@ -98,6 +103,7 @@ export class DocviewComponent implements OnChanges, OnInit {
         };
         this.comments = [...this.comments, newComment];
         this.commentsChange.emit(newComment);
+        newComment['_id'] = this.uuidv4();
     }
 
     uuidv4() {
@@ -334,9 +340,16 @@ export class CommentDialog implements OnInit {
         this.nameKey = this.data.nameKey ? this.data.nameKey : this.nameKey;
     }
     deleteSingle(id) {
-        this.dialogRef.close({
-            delete: id
-        })
+        if (id) {
+            this.dialogRef.close({
+                delete: id
+            })
+        }
+        else {
+            this.dialogRef.close({
+                deleteLocal: id
+            })
+        }
     }
     cancel(): void {
         this.dialogRef.close();
