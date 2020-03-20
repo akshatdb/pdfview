@@ -20,6 +20,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     page = 1;
     noOfPages = 1;
     loading = false;
+    hideComments = false;
     pdf;
     @ViewChild('commentLayer', { static: true }) commentsLayer: ElementRef;
     @ViewChild('containerLayer', { static: true }) containerLayer: ElementRef;
@@ -42,6 +43,7 @@ export class DocviewComponent implements OnChanges, OnInit {
         if (this.url && !this.loading && changes.url) {
             this.page = 1;
             this.noOfPages = 1;
+            this.pdf = null;
             this.renderPdf();
         }
     }
@@ -142,15 +144,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     }
 
     // PDF Rendering functions
-    loadPdf() {
-        return new Promise((resolve, reject) => {
-            if (this.pdf)
-                resolve(this.pdf);
-            else {
 
-            }
-        })
-    }
     nextPage() {
         this.page++;
         let context = this.canvasEl.nativeElement.getContext('2d');
@@ -164,13 +158,29 @@ export class DocviewComponent implements OnChanges, OnInit {
         this.renderPdf();
     }
 
+    loadPdf() {
+        return new Promise((resolve, reject) => {
+            if (this.pdf)
+                resolve(this.pdf);
+            else {
+                pdfjsLib.getDocument(this.url)
+                    .then((pdf) => {
+                        this.pdf = pdf;
+                        this.noOfPages = pdf.numPages;
+                        resolve(pdf);
+                    })
+                    .catch(err => {
+                        reject(err);
+                    })
+            }
+        })
+    }
 
     renderPdf() {
         if (!this.loading) {
             this.loading = true;
-            pdfjsLib.getDocument(this.url)
-                .then((pdf) => {
-                    this.noOfPages = pdf.numPages;
+            this.loadPdf()
+                .then((pdf: any) => {
                     return pdf.getPage(this.page);
                 })
                 .then((page) => {

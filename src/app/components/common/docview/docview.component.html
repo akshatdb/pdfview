@@ -18,6 +18,10 @@
         (click)="deleteAll()">
         <mat-icon class="mat-icon">delete</mat-icon>
     </div>
+    <div class="top-bar-icons" [ngClass]="{'disabled': commentMode, 'button-on': !hideComments}"
+        matTooltip="{{hideComments?'Show':'Hide'}} Comments" (click)="hideComments = !hideComments">
+        <mat-icon class="mat-icon">comment</mat-icon>
+    </div>
     <div class="top-bar-icons">
         <p>Page {{page}} of {{noOfPages}}</p>
     </div>
@@ -41,13 +45,13 @@
             </div>
         </ng-container>
     </div>
-    <div class="comment-layer" #userLayer [hidden]="loading">
+    <div class="comment-layer" #userLayer [hidden]="loading || hideComments">
         <ng-container *ngFor="let comment of comments; let i = index">
             <div *ngIf="comment.page === page" class="user-container" [style.top]="comment.icony"
                 [style.left]="comment.iconx" (clicked)="viewComment(comment, $event)" draggable [style.width]="'10px'"
                 [style.height]="'10px'" (mouseover)="current = i" (mouseout)="current = -1"
                 (positionChange)="posChange(comment, $event)">
-                <mat-icon>comment</mat-icon>
+                <mat-icon class="comment-icon">comment</mat-icon>
             </div>
         </ng-container>
     </div>

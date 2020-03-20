@@ -84,6 +84,12 @@
 }
 .user-container {
   user-select: none;
+  .comment-icon {
+    color: #c59148a6;
+    &:hover {
+      color: #c59148;
+    }
+  }
 }
 
 .loader-layer {
