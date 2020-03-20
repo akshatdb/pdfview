@@ -22,6 +22,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     loading = false;
     hideComments = false;
     pdf;
+    current;
     @ViewChild('commentLayer', { static: true }) commentsLayer: ElementRef;
     @ViewChild('containerLayer', { static: true }) containerLayer: ElementRef;
     @ViewChild('eventLayer', { static: true }) eventLayer: ElementRef;
