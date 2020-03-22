@@ -1,4 +1,4 @@
-<div class="top-bar text-left" (window:resize)="renderPdf()">
+<div class="top-bar text-left">
     <div class="top-bar-icons" [ngClass]="{'button-on':commentMode}" matTooltip="Add Comment"
         (click)="toggleCommentMode()">
         <mat-icon class="mat-icon">add_comment</mat-icon>
@@ -25,8 +25,12 @@
     <div class="top-bar-icons">
         <p>{{page}} of {{noOfPages}}</p>
     </div>
+    <div class="top-bar-icons" [ngClass]="{'disabled': commentMode}" matTooltip="{{fullMode?'Minimize':'Fullscreen'}}"
+        (click)="toggleFullscreen()">
+        <mat-icon class="mat-icon">{{fullMode?'fullscreen_exit':'fullscreen'}}</mat-icon>
+    </div>
 </div>
-<div class="layers-container" #containerLayer>
+<div class="layers-container" (resized)="renderPdf()" #containerLayer>
     <!-- <div class="img-layer" #containerLayer>
     </div> -->
     <div class="loader-layer" [ngClass]="{'loading': loading}">
@@ -39,13 +43,14 @@
     </div>
     <div class="comment-layer" #commentLayer [hidden]="loading">
         <ng-container *ngFor="let comment of comments; let i = index">
-            <div *ngIf="comment.page === page && current === i" class="comment-container" [style.top]="comment.y"
-                [style.left]="comment.x" [style.width]="comment.width" [style.height]="comment.height"
-                [style.background]="highlightColor" (click)="viewComment(comment)">
+            <div *ngIf="comment.page === page && (current === i || showCommentsAlways)" class="comment-container"
+                [style.top]="comment.y" [style.left]="comment.x" [style.width]="comment.width"
+                [style.height]="comment.height" [style.background]="highlightColor"
+                [ngClass]="{filter: current === i && showCommentsAlways}" (click)="viewComment(comment)">
             </div>
         </ng-container>
     </div>
-    <div class="comment-layer" #userLayer [hidden]="loading || hideComments">
+    <div class="comment-layer" #userLayer [hidden]="loading || hideComments || commentMode">
         <ng-container *ngFor="let comment of comments; let i = index">
             <div *ngIf="comment.page === page" class="user-container" [style.top]="comment.icony"
                 [style.left]="comment.iconx" (longpress)="current = i" (clicked)="viewComment(comment)" draggable

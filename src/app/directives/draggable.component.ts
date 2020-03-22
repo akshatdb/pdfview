@@ -108,7 +108,7 @@ export class Draggable implements OnInit {
                 }, this.longPressDuration);
             }
         }
-        return false; // Call preventDefault() on the event
+        // return false; // Call preventDefault() on the event
     }
     @HostListener('document:touchmove', ['$event'])
     @HostListener('document:mousemove', ['$event'])

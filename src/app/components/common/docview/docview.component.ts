@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, Renderer2, ElementRef, ViewChild, Inject, HostBinding, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnChanges, OnInit, Renderer2, ElementRef, ViewChild, Inject, HostBinding, Input, Output, EventEmitter, Host } from "@angular/core";
 import { fromEvent } from 'rxjs';
 import { map, switchMap, takeUntil, pairwise, tap } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
@@ -34,11 +34,32 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() nameKey = 'name';
     @Input() highlightColor = '#dc93932e';
     @Input() url;
+    @Input() fullMode = false;
+    @Input() showCommentsAlways = false;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
     @Output() newComment: EventEmitter<any> = new EventEmitter();
     @Output() updateComment: EventEmitter<any> = new EventEmitter();
     @Output() deleteComments: EventEmitter<any> = new EventEmitter();
     @Output() deleteSingle: EventEmitter<any> = new EventEmitter();
+    @HostBinding('style.width') width;
+    @HostBinding('style.height') height;
+    @HostBinding('style.top') top;
+    @HostBinding('style.left') left;
+    @HostBinding('style.position') position;
+    @HostBinding('style.background') background;
+    @HostBinding('style.zindex') zindex;
+    @HostBinding('style.overflow') overflow;
+    stylebackUp: {
+        height: string,
+        width: string,
+        top: string,
+        left: string,
+        position: string,
+        background: string,
+        zindex: string,
+        overflow: string;
+    };
+
 
     ngOnChanges(changes) {
         if (this.url && !this.loading && changes.url) {
@@ -96,6 +117,42 @@ export class DocviewComponent implements OnChanges, OnInit {
                 }
             }
         });
+    }
+
+    toggleFullscreen() {
+        if (this.fullMode) {
+            this.fullMode = false;
+            this.height = this.stylebackUp.height;
+            this.width = this.stylebackUp.width;
+            this.position = this.stylebackUp.position;
+            this.top = this.stylebackUp.top;
+            this.left = this.stylebackUp.left;
+            this.background = this.stylebackUp.background;
+            this.zindex = this.stylebackUp.zindex;
+        }
+        else {
+            this.stylebackUp = {
+                height: this.height,
+                width: this.width,
+                position: this.position,
+                top: this.top,
+                left: this.left,
+                background: this.background,
+                zindex: this.zindex,
+                overflow: this.overflow
+            }
+            this.fullMode = true;
+            this.height = '100%';
+            this.width = '100%';
+            this.position = 'fixed';
+            this.top = '0';
+            this.left = '0';
+            this.background = 'white';
+            this.overflow = 'scroll';
+            this.zindex = '10000';
+        }
+        this.loading = false
+        this.renderPdf();
     }
     saveComment(evt, comment) {
         let newComment = {
@@ -188,16 +245,13 @@ export class DocviewComponent implements OnChanges, OnInit {
 
                     let viewport = page.getViewport(1.0);
                     let scale = 1;
-                    const padding = 2 * this.getNumFromPixel(window.getComputedStyle(this.el.nativeElement.parentElement, null).getPropertyValue('padding-left'));
-                    if (this.el.nativeElement.parentElement.clientWidth - padding < viewport.width) {
-                        scale = (this.el.nativeElement.parentElement.clientWidth - padding) / viewport.width;
-                        viewport = page.getViewport(scale);
-                    }
+                    // const padding = 2 * this.getNumFromPixel(window.getComputedStyle(this.el.nativeElement.parentElement, null).getPropertyValue('padding-left'));
+                    scale = (this.containerLayer.nativeElement.clientWidth - 18) / viewport.width;
+                    viewport = page.getViewport(scale);
                     let context = this.canvasEl.nativeElement.getContext('2d');
                     this.canvasEl.nativeElement.height = viewport.height;
                     this.canvasEl.nativeElement.width = viewport.width;
-                    this.containerLayer.nativeElement.parentElement.style.height = viewport.height + 2 + 'px'
-                    this.containerLayer.nativeElement.parentElement.style.width = viewport.width + 2 + 'px'
+                    this.containerLayer.nativeElement.style.height = viewport.height + 2 + 'px'
 
                     let renderContext = {
                         canvasContext: context,

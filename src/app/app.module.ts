@@ -17,6 +17,7 @@ import { DocviewComponent, CommentDialog } from './components/common/docview/doc
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { DateAgoPipe } from './pipes/dateago.pipe';
 import { Draggable } from './directives/draggable.component';
+import { AngularResizedEventModule } from 'angular-resize-event';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,7 @@ import { Draggable } from './directives/draggable.component';
     MatcompsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    CKEditorModule
+    AngularResizedEventModule
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
   entryComponents: [CommentDialog],
