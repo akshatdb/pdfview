@@ -28,6 +28,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @ViewChild('eventLayer', { static: true }) eventLayer: ElementRef;
     @ViewChild('pdfcanvas', { static: true }) canvasEl: ElementRef;
     @ViewChild('pdfcontainer', { static: true }) container: ElementRef;
+    @ViewChild('topBar', { static: true }) topbar: ElementRef;
     @Input() comments = [];
     @Input() user = {};
     @Input() domainKey = 'domainId';
@@ -35,7 +36,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() highlightColor = '#dc93932e';
     @Input() url;
     @Input() fullMode = false;
-    @Input() showCommentsAlways = false;
+    @Input() showCommentsAlways = true;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
     @Output() newComment: EventEmitter<any> = new EventEmitter();
     @Output() updateComment: EventEmitter<any> = new EventEmitter();
@@ -45,10 +46,11 @@ export class DocviewComponent implements OnChanges, OnInit {
     @HostBinding('style.height') height;
     @HostBinding('style.top') top;
     @HostBinding('style.left') left;
-    @HostBinding('style.position') position;
+    @HostBinding('style.position') position = 'relative';
     @HostBinding('style.background') background;
     @HostBinding('style.zindex') zindex;
-    @HostBinding('style.overflow') overflow;
+
+    setHeight = '600px';
     stylebackUp: {
         height: string,
         width: string,
@@ -57,7 +59,6 @@ export class DocviewComponent implements OnChanges, OnInit {
         position: string,
         background: string,
         zindex: string,
-        overflow: string;
     };
 
 
@@ -139,7 +140,6 @@ export class DocviewComponent implements OnChanges, OnInit {
                 left: this.left,
                 background: this.background,
                 zindex: this.zindex,
-                overflow: this.overflow
             }
             this.fullMode = true;
             this.height = '100%';
@@ -148,7 +148,6 @@ export class DocviewComponent implements OnChanges, OnInit {
             this.top = '0';
             this.left = '0';
             this.background = 'white';
-            this.overflow = 'scroll';
             this.zindex = '10000';
         }
         this.loading = false
@@ -251,7 +250,11 @@ export class DocviewComponent implements OnChanges, OnInit {
                     let context = this.canvasEl.nativeElement.getContext('2d');
                     this.canvasEl.nativeElement.height = viewport.height;
                     this.canvasEl.nativeElement.width = viewport.width;
-                    this.containerLayer.nativeElement.style.height = viewport.height + 2 + 'px'
+                    this.topbar.nativeElement.style.width = this.containerLayer.nativeElement.clientWidth + 'px';
+                    if (this.fullMode)
+                        this.containerLayer.nativeElement.style.height = '100%';
+                    else
+                        this.containerLayer.nativeElement.style.height = this.setHeight ? this.setHeight : window.innerHeight - this.containerLayer.nativeElement.getBoundingClientRect().top + 'px';
 
                     let renderContext = {
                         canvasContext: context,

@@ -1,4 +1,4 @@
-<div class="top-bar text-left">
+<div class="top-bar text-left" #topBar>
     <div class="top-bar-icons" [ngClass]="{'button-on':commentMode}" matTooltip="Add Comment"
         (click)="toggleCommentMode()">
         <mat-icon class="mat-icon">add_comment</mat-icon>
@@ -23,7 +23,7 @@
         <mat-icon class="mat-icon">comment</mat-icon>
     </div>
     <div class="top-bar-icons">
-        <p>{{page}} of {{noOfPages}}</p>
+        <p>{{page}} of {{noOfPages}} </p>
     </div>
     <div class="top-bar-icons" [ngClass]="{'disabled': commentMode}" matTooltip="{{fullMode?'Minimize':'Fullscreen'}}"
         (click)="toggleFullscreen()">
@@ -33,15 +33,18 @@
 <div class="layers-container" (resized)="renderPdf()" #containerLayer>
     <!-- <div class="img-layer" #containerLayer>
     </div> -->
-    <div class="loader-layer" [ngClass]="{'loading': loading}">
+    <div class="loader-layer" [ngClass]="{'loading': loading}" [style.width]="canvasEl.nativeElement.width + 'px'"
+        [style.height]="canvasEl.nativeElement.height + 'px'">
         <div class="loader">Loading...</div>
     </div>
     <div class="canvas-layer">
-        <div #pdfcontainer class="canvas-container" style="height: inherit">
+        <div #pdfcontainer class="canvas-container" style="height: inherit"
+            [style.width]="canvasEl.nativeElement.width + 'px'">
             <canvas #pdfcanvas></canvas>
         </div>
     </div>
-    <div class="comment-layer" #commentLayer [hidden]="loading">
+    <div class="comment-layer" #commentLayer [hidden]="loading" [style.width]="canvasEl.nativeElement.width + 'px'"
+        [style.height]="canvasEl.nativeElement.height + 'px'">
         <ng-container *ngFor="let comment of comments; let i = index">
             <div *ngIf="comment.page === page && (current === i || showCommentsAlways)" class="comment-container"
                 [style.top]="comment.y" [style.left]="comment.x" [style.width]="comment.width"
@@ -50,7 +53,8 @@
             </div>
         </ng-container>
     </div>
-    <div class="comment-layer" #userLayer [hidden]="loading || hideComments || commentMode">
+    <div class="comment-layer" #userLayer [hidden]="loading || hideComments || commentMode"
+        [style.width]="canvasEl.nativeElement.width + 'px'" [style.height]="canvasEl.nativeElement.height + 'px'">
         <ng-container *ngFor="let comment of comments; let i = index">
             <div *ngIf="comment.page === page" class="user-container" [style.top]="comment.icony"
                 [style.left]="comment.iconx" (longpress)="current = i" (clicked)="viewComment(comment)" draggable
@@ -60,7 +64,7 @@
             </div>
         </ng-container>
     </div>
-    <div class="event-layer" [ngClass]="{'selector-pointer':commentMode}" #eventLayer>
-
+    <div class="event-layer" [ngClass]="{'selector-pointer':commentMode}" #eventLayer
+        [style.height]="canvasEl.nativeElement.height + 'px'" [style.width]="canvasEl.nativeElement.width + 'px'">
     </div>
 </div>

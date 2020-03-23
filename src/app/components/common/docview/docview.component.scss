@@ -4,6 +4,9 @@
   position: relative;
   background-attachment: fixed;
   border: 1px solid #d2c7c7;
+  overflow-y: scroll;
+  top: 32px;
+  margin-bottom: 32px;
   .img-layer,
   .comment-layer,
   .event-layer,
@@ -29,7 +32,10 @@
   height: 32px;
   border: 1px solid #d2c7c7;
   border-bottom: none;
-  position: relative;
+  position: absolute;
+  top: 0;
+  background: white;
+  z-index: 100;
   p {
     display: inline;
     padding: 5px 5px !important;
