@@ -11,13 +11,10 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HomeComponent } from './components/home/home.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CKEditorModule } from 'ng2-ckeditor';
 import { CommonModule } from '@angular/common';
-import { DocviewComponent, CommentDialog } from './components/common/docview/docview.component';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import { DateAgoPipe } from './pipes/dateago.pipe';
-import { Draggable } from './directives/draggable.component';
 import { AngularResizedEventModule } from 'angular-resize-event';
+import { DocViewModule } from './components/common/docview/docview.module';
 
 @NgModule({
   declarations: [
@@ -25,13 +22,10 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     HeaderComponent,
     SidenavComponent,
     FooterComponent,
-    HomeComponent,
-    DocviewComponent,
-    CommentDialog,
-    DateAgoPipe,
-    Draggable
+    HomeComponent
   ],
   imports: [
+    DocViewModule,
     BrowserModule,
     CommonModule,
     FormsModule,
@@ -39,11 +33,10 @@ import { AngularResizedEventModule } from 'angular-resize-event';
     BrowserAnimationsModule,
     MatcompsModule,
     ReactiveFormsModule,
-    HttpClientModule,
-    AngularResizedEventModule
+    HttpClientModule
   ],
   providers: [{ provide: LocationStrategy, useClass: HashLocationStrategy }],
-  entryComponents: [CommentDialog],
+  entryComponents: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
