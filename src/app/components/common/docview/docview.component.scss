@@ -5,7 +5,7 @@
   background-attachment: fixed;
   border: 1px solid #d2c7c7;
   overflow-y: scroll;
-  top: 32px;
+  // top: 32px;
   margin-bottom: 32px;
   .img-layer,
   .comment-layer,
@@ -32,7 +32,7 @@
   height: 32px;
   border: 1px solid #d2c7c7;
   border-bottom: none;
-  position: absolute;
+  position: sticky;
   top: 0;
   background: white;
   z-index: 100;

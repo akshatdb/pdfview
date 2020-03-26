@@ -250,7 +250,7 @@ export class DocviewComponent implements OnChanges, OnInit {
                     let context = this.canvasEl.nativeElement.getContext('2d');
                     this.canvasEl.nativeElement.height = viewport.height;
                     this.canvasEl.nativeElement.width = viewport.width;
-                    this.topbar.nativeElement.style.width = this.containerLayer.nativeElement.clientWidth + 'px';
+                    // this.topbar.nativeElement.style.width = this.containerLayer.nativeElement.clientWidth + 'px';
                     if (this.fullMode)
                         this.containerLayer.nativeElement.style.height = '100%';
                     else
