@@ -56,10 +56,15 @@
     <div class="comment-layer" #userLayer [hidden]="loading || hideComments || commentMode"
         [style.width]="canvasEl.nativeElement.width + 'px'" [style.height]="canvasEl.nativeElement.height + 'px'">
         <ng-container *ngFor="let comment of comments; let i = index">
-            <div *ngIf="comment.page === page" class="user-container" [style.top]="comment.icony"
+            <div *ngIf="comment.page === page && draggableComment" class="user-container" [style.top]="comment.icony"
                 [style.left]="comment.iconx" (longpress)="current = i" (clicked)="viewComment(comment)" draggable
                 [style.width]="'10px'" [style.height]="'10px'" (mouseover)="current = i" (mouseout)="current = -1"
                 (positionChange)="posChange(comment, $event)">
+                <mat-icon class="comment-icon">comment</mat-icon>
+            </div>
+            <div *ngIf="comment.page === page && !draggableComment" class="user-container" [style.top]="comment.icony"
+                [style.left]="comment.iconx" (click)="current = i; viewComment(comment)" [style.width]="'10px'"
+                [style.height]="'10px'" (mouseover)="current = i" (mouseout)="current = -1">
                 <mat-icon class="comment-icon">comment</mat-icon>
             </div>
         </ng-container>

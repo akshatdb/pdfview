@@ -37,6 +37,7 @@ export class DocviewComponent implements OnChanges, OnInit {
     @Input() url;
     @Input() fullMode = false;
     @Input() showCommentsAlways = true;
+    @Input() draggableComment = false;
     @Output() commentsChange: EventEmitter<any> = new EventEmitter();
     @Output() newComment: EventEmitter<any> = new EventEmitter();
     @Output() updateComment: EventEmitter<any> = new EventEmitter();
