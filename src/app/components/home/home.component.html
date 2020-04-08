@@ -8,9 +8,10 @@
     <div class="col-md-2 text-left">
         <button mat-raised-button class="btn-primary ml-3" [disabled]="!(id && file)" (click)="loadFile()">Load</button>
     </div>
+    <mat-slide-toggle [(ngModel)]="dragFlag">{{dragFlag?'Draggable':'Not Draggable'}}</mat-slide-toggle>
     <div class="col-md-12 mt-2">
         <app-docview class="view-container" [url]="url" [user]="{domainId: name.split(' ').join('.'), name: name}"
-            [comments]="comments" (newComment)="save($event)" (deleteComments)="delete()"
+            [comments]="comments" (newComment)="save($event)" (deleteComments)="delete()" [draggableComment]="dragFlag"
             (updateComment)="update($event)" (deleteSingle)="delete($event)">
         </app-docview>
     </div>

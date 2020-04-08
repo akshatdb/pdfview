@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   url: any = 'assets/sample.pdf';
   id = '1';
   file: File;
+  dragFlag = false;
   ngOnInit() {
     this.getComments();
   }
