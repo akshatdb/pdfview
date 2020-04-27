@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
   name = 'Akshat Dubey';
   url: any = 'assets/sample.pdf';
   id = '1';
-  file: File;
+  file: File | Blob;
   dragFlag = false;
   ngOnInit() {
     this.getComments();
@@ -47,7 +47,21 @@ export class HomeComponent implements OnInit {
 
 
   fileHandle(evt) {
-    this.file = evt.target.files[0];
+    const fileSplit = evt.target.files[0].name.split('.');
+    switch (fileSplit[fileSplit.length - 1]) {
+      case 'docx':
+        let form = new FormData();
+        form.append('file', evt.target.files[0]);
+        this.http.post(environment.docxtopdf + '/docxpdf', form, { responseType: "blob" }).subscribe(res => {
+          this.file = res;
+        })
+        break;
+      case 'pdf':
+        this.file = evt.target.files[0];
+        break;
+      default:
+        console.log('Not supported');
+    }
     this.id = null;
   }
   loadFile() {
