@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 declare var pdfjsLib: any;
 
@@ -11,7 +12,7 @@ declare var pdfjsLib: any;
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private http: HttpClient, private renderer: Renderer2) { }
+  constructor(private http: HttpClient, private renderer: Renderer2, private snackbar: MatSnackBar) { }
   comments = [];
   page = 1;
   name = 'Akshat Dubey';
@@ -54,6 +55,8 @@ export class HomeComponent implements OnInit {
         form.append('file', evt.target.files[0]);
         this.http.post(environment.docxtopdf + '/docxpdf', form, { responseType: "blob" }).subscribe(res => {
           this.file = res;
+        }, err => {
+          this.snackbar.open('Error while rendering file');
         })
         break;
       case 'pdf':
